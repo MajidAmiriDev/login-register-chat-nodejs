@@ -1,3 +1,29 @@
+import firebase from 'firebase/app';
+import 'firebase/messaging';
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID",
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const messaging = firebase.messaging();
+
+messaging.requestPermission()
+    .then(() => messaging.getToken())
+    .then((token) => {
+        console.log('Token received:', token);
+        // ارسال توکن به سرور برای ذخیره
+        // استفاده از API برای ذخیره توکن در پایگاه داده
+    })
+    .catch((err) => {
+        console.error('Error getting permission or token:', err);
+    });
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');

@@ -1,5 +1,13 @@
 const messaging = require('./firebase');
 const notificationEmitter = require('../events/notificationEmitter');
+const { sendToQueue } = require('../queues/notificationProducer');
+
+
+notificationEmitter.on('sendNotification', async (data) => {
+    const { token, title, body } = data;
+    // ارسال پیام به صف RabbitMQ
+    await sendToQueue('notificationQueue', { token, title, body });
+});
 
 // ارسال نوتیفیکیشن
 const sendNotification = async (registrationToken, title, body) => {
